@@ -1,0 +1,29 @@
+curl --request GET --url \
+'https://udemy-utils.herokuapp.com/api/v1/events?token=token123'
+
+// ID1のみ取得
+curl --request GET --url \
+'https://udemy-utils.herokuapp.com/api/v1/events/1?token=token123'
+
+// イベントの追加
+curl --request POST \
+--url 'https://udemy-utils.herokuapp.com/api/v1/events?token=token123' \
+--header 'Content-Type: application/json' \
+--data '{
+	"title": "event11",
+	"body": "body for event 11"
+}'
+
+// ID１を変更
+curl --request PUT \
+--url 'https://udemy-utils.herokuapp.com/api/v1/events/1?token=token123' \
+--header 'Content-Type: application/json' \
+--data '{
+	"title": "Change title",
+	"body": "Change"
+}'
+
+// 削除メソッド
+curl --request DELETE \
+--url 'https://udemy-utils.herokuapp.com/api/v1/events/1?token=token123' \
+--header 'Content-Type: application/json' 

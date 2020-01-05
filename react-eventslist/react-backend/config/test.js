@@ -1,0 +1,6 @@
+{
+  "bigquery": {
+    "projectId": "",
+    "keyFilename": ".json"
+  }
+}
