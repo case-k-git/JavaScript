@@ -3,8 +3,7 @@ const router = express.Router();
 const { EventsHandler } = require('../api/handlers/events');
 
 /* GET event listing. */
-// APIの中身は外部に実装しここでreturnする
-router.get('/getEventsData', function(req, res, next) {
-  return new EventsHandler().getEventsData(req, res);
+router.get('/EventsDataList', function(req, res, next) {
+  return new EventsHandler().EventsDataList(req, res);
 });
 module.exports = router;
