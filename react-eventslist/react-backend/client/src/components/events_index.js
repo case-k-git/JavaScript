@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { readEvents } from '../actions'
 import _ from 'lodash'
+import LineSeriesGraph from './line_series_graph';
+import LineDrawing from './line_drawing';
 
 class EventsIndex extends Component {
   componentDidMount() {
@@ -10,17 +12,13 @@ class EventsIndex extends Component {
   }
 
   displayEventsList() {
-    return _.map(this.props.events, event => (
+    const eventList =  _.map(this.props.events, event => (
       <tr key={event.id}>
         <td>{event.id}</td>
         <td>{event.title}</td>
         <td>{event.body}</td>
       </tr>
     ))
-  }
-
-  render() {
-    const props = this.props
     return (
       <table>
         <thead>
@@ -31,9 +29,20 @@ class EventsIndex extends Component {
           </tr>
         </thead>
         <tbody>
-        {this.displayEventsList()}
+          {eventList}
         </tbody>
       </table>
+    )
+  }
+
+  render() {
+    const props = this.props
+    console.log(props);
+    return (
+      <React.Fragment>
+    　  <LineSeriesGraph events={this.props.events}/>
+    　  <LineDrawing events={this.props.events}/>
+      </React.Fragment>
     )
   }
 }
