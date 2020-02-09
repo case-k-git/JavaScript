@@ -1,24 +1,61 @@
 const logger = require('../logger');
+const {BigQuery} = require('@google-cloud/bigquery');
 
-const EventsHandler = class EventsHandler {
+const StockPriceHandler = class StockPriceHandler {
   constructor() {
-    
+	this.bigqueryClient = new BigQuery({
+	  projectId: '',
+	  keyFilename: ''
+	});
   }
-  EventsDataList(req, res) {
-  	console.log('call getEventsData');
-    const results = res.json([
-	  {id: 1, title: "event 1", body: 1},
-	  {id: 2, title: "event 2", body: 2},
-	  {id: 3, title: "event 3", body: 3},
-	  {id: 4, title: "event 4", body: 4},
-	  {id: 5, title: "event 5", body: 5},
-	  {id: 6, title: "event 6", body: 6},
-	  {id: 7, title: "event 7", body: 7},
-	  {id: 8, title: "event 8", body: 8},
-	  {id: 9, title: "event 9", body: 9}
-  	])
-  	logger.debug(results);
+  selectBigQuery(query) {
+	return new Promise((resolve, reject) => {
+	  const options = {
+		query,
+		// Location must match that of the dataset(s) referenced in the query.
+		// location:'US',
+	  };
+	  this.bigqueryClient.query(options, (err, rows) => {
+	  if (err) {
+		return reject(err);
+	  }
+	  return resolve(rows);
+	  });
+	});
+  }
+  /**
+   * 日経平均株価を取得する
+   * @param {*} req 
+   * @param {*} res 
+   */
+  searchNikkeiStockAverage(req, res) {
+	const query = `SELECT
+	    date,
+	    year,
+	    month,
+	    day,
+        unixtime_jst,
+	    opening_price,
+	    high_price,
+	    low_price,
+        end_price
+	  FROM
+		stock_app.stock_sample`;
+	const options = {
+	  query,
+	  // Location must match that of the dataset(s) referenced in the query.
+	  // location:'US',
+	};
+	const results = this.selectBigQuery(query).then((result) => {
+	  console.log(result);
+	  return res.json(result)
+	}).catch((err) => {
+		console.log(err);
+		res.status(400).send(err.message);
+	}).finally(() => {
+
+	});
   	return results
   }
 }
-exports.EventsHandler = EventsHandler;
+exports.StockPriceHandler = StockPriceHandler;

@@ -6,16 +6,20 @@ import _ from 'lodash'
 
 const LineSeriesGraph = (props) => {
   // To Do：API完成後に対応
-  // const eventLit =  _.map(props.events, event => (
-  //  event.body
-  // ));
+  const eventList =  _.map(props.events, event => (
+    [parseInt(String(event.unixtime_jst) + '000'), event.opening_price]
+   ));
+  console.log('line');
+  console.log(eventList);
+  /*
   const　eventList = [
     [parseInt(String(1581130800)+"000")　,23815],
     [parseInt(String(1581134400)+"000"),23825],
     [parseInt(String(1581138000)+"000"),23820],
     [parseInt(String(1581141600)+"000"),23827]];
+  */
   const data = [];
-  //日時オブジェクト：https://www.w3schools.com/jsref/jsref_gethours.asp
+  // new Date：https://www.w3schools.com/jsref/jsref_gethours.asp
   const date = new Date()
   console.log(date);
   const h = date.getHours();
@@ -24,7 +28,7 @@ const LineSeriesGraph = (props) => {
   const w = [ "日", "月", "火", "水", "木", "金", "土" ][date.getDay()];   
   Highcharts.setOptions({
     global: {  // グローバルオプション
-    useUTC: false   // GMTではなくJSTを使う
+    //useUTC: false   // GMTではなくJSTを使う
     },
     lang: {  
       rangeSelectorZoom: '拡大・縮小',
@@ -60,13 +64,13 @@ const LineSeriesGraph = (props) => {
       count: 1,
       text: '1週間',
       offsetMax: 0
-    }]
+      },]
     },
     xAxis:{
     /**
-     * 　xAxis：
-     *  1時間単位で描画
-     *  https://stackoverflow.com/questions/22141523/highstock-chart-rangeselector-minute-and-day-doesnt-work
+     * xAxis：
+     * 1時間単位で描画
+     * https://stackoverflow.com/questions/22141523/highstock-chart-rangeselector-minute-and-day-doesnt-work
      */
       minRange: 3600 * 1000,
       type: 'datetime',
@@ -87,7 +91,7 @@ const LineSeriesGraph = (props) => {
       xDateFormat: '%m月%d日('+ w +') %H時 (現在時刻：'+m+'月'+ d　+ '日 ('+ w +') ' + h +'時)'
     },
     navigator: {
-    //navigator:https://stackoverflow.com/questions/15717835/change-navigator-date-format-in-highstock
+    // navigator:https://stackoverflow.com/questions/15717835/change-navigator-date-format-in-highstock
       xAxis: {
         dateTimeLabelFormats: {
           day:  '%b%d日',
