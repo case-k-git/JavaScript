@@ -1,37 +1,49 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import _ from 'lodash'
 
-const LineDrawing = (props) => {
-    console.log(props.events);
-    let eventList =  _.map(props.events, event => (
-        <tr key={event.day}>
-        <td>{event.date.value}</td>
-        <td>{event.opening_price}</td>
-        <td>{event.high_price}</td>
-        <td>{event.low_price}</td>
-        <td>{event.end_price}</td>
-        </tr>
-    ))
-    
-    //eventList = props.events;
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
 
-    console.log(eventList);
-    return (
-        <table>
-        <thead>
-            <tr>
-            <th>日付</th>
-            <th>始値</th>
-            <th>高値</th>
-            <th>安値</th>
-            <th>終値</th>
-            </tr>
-        </thead>
-        <tbody>
-            {eventList}
-        </tbody>
-        </table>
-    )   
+const LineDrawing = (props) => {
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>日付</TableCell>
+            <TableCell align="right">始値</TableCell>
+            <TableCell align="right">高値</TableCell>
+            <TableCell align="right">安値</TableCell>
+            <TableCell align="right">終値</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {_.map(props.events, event => (
+            <TableRow key={event.day}>
+              <TableCell component="th" scope="row">
+                {event.date.value}
+              </TableCell>
+              <TableCell align="right">{event.opening_price}</TableCell>
+              <TableCell align="right">{event.high_price}</TableCell>
+              <TableCell align="right">{event.low_price}</TableCell>
+              <TableCell align="right">{event.end_price}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }
-export default LineDrawing;
+export default LineDrawing

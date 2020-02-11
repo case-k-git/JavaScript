@@ -6,7 +6,7 @@ export default (events=[], action) => {
   switch (action.type) {
     case READ_EVENTS:
 	  return _.mapKeys(action.response.data, 'day')
-	default:
+    default:
 	  return events
   }
 }
